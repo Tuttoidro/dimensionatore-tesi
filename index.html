@@ -374,7 +374,7 @@ function accRows(){
       var q=aQ[a.id]||0;
       if(!q)return;
       var price=a.priceWhite;
-      r+='<tr><td class="td">'+a.name+'</td><td class="td">'+a.tag+'</td><td class="td" style="text-align:center">'+q+'</td><td class="td">'+a.unit+'</td><td class="td" style="color:#d97706;font-weight:600">
+      r+='<tr><td class="td">'+a.name+'</td><td class="td">'+a.tag+'</td><td class="td" style="text-align:center">'+q+'</td><td class="td">'+a.unit+'</td><td class="td" style="color:#d97706;font-weight:600">&euro;&nbsp;'+fmt(price*q)+'</td></tr>';
     }
   });
   return r;
