@@ -392,8 +392,7 @@ function doSend(){
   /* Notifica lead → configura LEAD_ENDPOINT per ricevere i dati */
   if(typeof LEAD_ENDPOINT!=='undefined'&&LEAD_ENDPOINT){
     var payload={nome:name,email:email,tel:phone,note:notes,data:new Date().toISOString(),stanze:rooms.map(function(r){return{stanza:r.name,modello:'Tesi '+r.c+' col. H.'+r.h+'mm',el:r.el,watt:r.tot,finitura:r.selColor?r.selColor.name:'Bianco standard',prezzo:r.colorPrice||r.price||null};})};
-fetch(LEAD_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:
-JSON.stringify(payload)}).catch(function(){});
+    fetch(LEAD_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});
   }
   makePDF(name,email,phone,notes);go('s-ok');prog(4);
 }
@@ -422,10 +421,9 @@ function makePDF(name,email,phone,notes){
   ACC.forEach(function(a){
     var q=aQ[a.id]||0;if(!q)return;
     var priceCell='su richiesta';
-if(a.id==='kit_caleffi') priceCell='&euro;&nbsp;'+fmt(a.priceWhite*q);
-    if(a.id==='staffe') priceCell='&euro;&nbsp;'+fmt(a.priceWhite*q);
+    if(a.id==='staffe'&&a.price) priceCell='&euro;&nbsp;'+fmt(a.price*q);
     if(a.id==='valv_irsap'&&hasColor) priceCell='In tinta (+25%) &mdash; su richiesta';
-  accHtml+='<tr><td class="td">'+a.name+'</td><td class="td" style="color:#6b7280">'+a.tag+'</td><td class="td tac">'+q+'</td><td class="td">'+a.unit+'</td><td class="td tar" style="color:#d97706;font-weight:600">'+priceCell+'</td></tr>';
+    accHtml+='<tr><td class="td">'+a.name+'</td><td class="td" style="color:#6b7280">'+a.desc+'</td><td class="td tac">'+q+'</td><td class="td">'+a.unit+'</td><td class="td tar" style="color:#d97706;font-weight:600">'+priceCell+'</td></tr>';
   });
 
   var h='<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Preventivo IRSAP Tesi &mdash; TuttoIdro</title>'+
