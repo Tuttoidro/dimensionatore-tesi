@@ -387,7 +387,7 @@ function doSend(){
   if(!name){alert('Inserisci il tuo nome.');return;}
   var emailRx=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   if(!emailRx.test(email)){alert('Email non valida.\nUsa il formato: nome@provider.it');return;}
-  var phoneRx=/^3\d{8,9}$/;
+  var phoneRx=/^(\+39)?3\d{8,9}$/;
   if(!phoneRx.test(phone)){alert('Numero di telefono non valido.\nDeve iniziare con 3 e avere 9 o 10 cifre (es. 3331234567).');return;}
   /* Notifica lead → configura LEAD_ENDPOINT per ricevere i dati */
   if(typeof LEAD_ENDPOINT!=='undefined'&&LEAD_ENDPOINT){
@@ -417,14 +417,7 @@ function makePDF(name,email,phone,notes){
     '</tr>';
   });
   /* Accessori */
-  var accHtml='';
-  ACC.forEach(function(a){
-    var q=aQ[a.id]||0;if(!q)return;
-    var priceCell='su richiesta';
-    if(a.id==='staffe'&&a.price) priceCell='&euro;&nbsp;'+fmt(a.price*q);
-    if(a.id==='valv_irsap'&&hasColor) priceCell='In tinta (+25%) &mdash; su richiesta';
-    accHtml+='<tr><td class="td">'+a.name+'</td><td class="td" style="color:#6b7280">'+a.desc+'</td><td class="td tac">'+q+'</td><td class="td">'+a.unit+'</td><td class="td tar" style="color:#d97706;font-weight:600">'+priceCell+'</td></tr>';
-  });
+  var accHtml=accRows();
 
   var h='<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Preventivo IRSAP Tesi &mdash; TuttoIdro</title>'+
   '<style>'+
