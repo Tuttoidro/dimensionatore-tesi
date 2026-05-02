@@ -387,8 +387,8 @@ function doSend(){
   if(!name){alert('Inserisci il tuo nome.');return;}
   var emailRx=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   if(!emailRx.test(email)){alert('Email non valida.\nUsa il formato: nome@provider.it');return;}
-  var phoneRx=/^3\d{8,9}$/;
-  if(!phoneRx.test(phone)){alert('Numero di telefono non valido.\nDeve iniziare con 3 e avere 9 o 10 cifre (es. 3331234567).');return;}
+ var phoneRx=/^(\+39)?3\d{8,9}$/;
+  if(!phoneRx.test(phone)){alert('Numero di telefono non valido.\nFormati accettati: 3331234567 oppure +393331234567');return;}
   /* Notifica lead → configura LEAD_ENDPOINT per ricevere i dati */
   if(typeof LEAD_ENDPOINT!=='undefined'&&LEAD_ENDPOINT){
     var payload={nome:name,email:email,tel:phone,note:notes,data:new Date().toISOString(),stanze:rooms.map(function(r){return{stanza:r.name,modello:'Tesi '+r.c+' col. H.'+r.h+'mm',el:r.el,watt:r.tot,finitura:r.selColor?r.selColor.name:'Bianco standard',prezzo:r.colorPrice||r.price||null};})};
@@ -418,9 +418,7 @@ function makePDF(name,email,phone,notes){
     '</tr>';
   });
   /* Accessori */
-  var accHtml='';
-  ACC.forEach(function(a){
-    var q=aQ[a.id]||0;if(!q)return;
+  var accHtml=accRows();
     var priceCell='su richiesta';
 if(a.id==='kit_caleffi') priceCell='&euro;&nbsp;'+fmt(a.priceWhite*q);
     if(a.id==='staffe') priceCell='&euro;&nbsp;'+fmt(a.priceWhite*q);
