@@ -392,7 +392,7 @@ function doSend(){
   /* Notifica lead → configura LEAD_ENDPOINT per ricevere i dati */
   if(typeof LEAD_ENDPOINT!=='undefined'&&LEAD_ENDPOINT){
     var payload={nome:name,email:email,tel:phone,note:notes,data:new Date().toISOString(),stanze:rooms.map(function(r){return{stanza:r.name,modello:'Tesi '+r.c+' col. H.'+r.h+'mm',el:r.el,watt:r.tot,finitura:r.selColor?r.selColor.name:'Bianco standard',prezzo:r.colorPrice||r.price||null};})};
-    fetch(LEAD_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});
+fetch(LEAD_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)}).catch(function(){});
   }
   makePDF(name,email,phone,notes);go('s-ok');prog(4);
 }
